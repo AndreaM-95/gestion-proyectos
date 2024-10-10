@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskList from '../Components/TaskList';
-import { CDBAnimation } from 'cdbreact';
+
 import '../Styles/main.css';
+
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import es from 'date-fns/locale/es';
@@ -26,8 +27,8 @@ const ProjectDetails = () => {
     };
 
     const mockTasks = [
-      { id: 1, nombre: 'Tarea 1', estado: 'pendiente' },
-      { id: 2, nombre: 'Tarea 2', estado: 'en progreso' },
+      { id: 1, nombre: 'Tarea 1', descripcion: 'Hacer to-do list', estado: 'pendiente', proyectoID:1, responsable:'Andrea' },
+      { id: 2, nombre: 'Tarea 2', descripcion: 'Hacer inventario', estado: 'en progreso', proyectoID:1, responsable:'Jhon' },
     ];
 
     // Establecemos el proyecto y las tareas
@@ -43,12 +44,11 @@ const ProjectDetails = () => {
     <div id="pag-detalles" className="container">
       {project ? (
         <>
-          <CDBAnimation type="bounce" key={project.id} >
-          <h1 className='mt-5 mb-3'>{project.nombre}</h1>
-          <p>{project.descripcion}</p>
 
-          <div className='d-flex flex-wrap justify-content-evenly align-items-center'>
-            <div className='box-fecha p-3 border border-2 border-dark-subtle rounded m-2'>
+          <div key={project.id} className='d-flex flex-wrap justify-content-evenly align-items-center box-fecha p-3 border border-2 border-dark-subtle rounded my-2'>
+            <h1 className='mt-5 mb-3'>{project.nombre}</h1>
+            <p>{project.descripcion}</p>
+            <div className=' p-3 border border-2 border-dark-subtle rounded m-2'>
               <p className='my-2 text-center'><strong>Fecha de inicio:</strong></p>
               <DatePicker
                 selected={fechaInicio}
@@ -59,7 +59,7 @@ const ProjectDetails = () => {
               />
             </div>
 
-            <div className='box-fecha p-3 border border-2 border-dark-subtle rounded m-2'>
+            <div className=' p-3 border border-2 border-dark-subtle rounded m-2'>
               <p className='my-2 text-center'><strong>Fecha de finalización:</strong></p>
               <DatePicker
                 selected={fechaFin}
@@ -70,11 +70,8 @@ const ProjectDetails = () => {
               />
             </div>
           </div>
+          <TaskList initialTasks={tasks} />
           
-          <h3 className='my-3'>Tareas asociadas</h3>
-
-          <TaskList tasks={tasks} />
-          </CDBAnimation>
         </>
       ) : (
         <p>Cargando detalles del proyecto...</p>
