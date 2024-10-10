@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProjectList from '../Components/ProjectList';
+import '../Styles/main.css';
+
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -14,8 +16,8 @@ const Projects = () => {
   }, []);
 
   return (
-    <div className="container">
-      <h1>Proyectos</h1>
+    <div id="pag-proyectos" className="container d-flex flex-column align-items-center col-12 col-md-6 justify-content-center">
+      <h1 className='text-center fs-2 fs-md-1 bs-info my-5'>Proyectos</h1>
       <ProjectList projects={projects} />
     </div>
   );
