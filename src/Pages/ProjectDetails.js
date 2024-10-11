@@ -27,8 +27,8 @@ const ProjectDetails = () => {
     };
 
     const mockTasks = [
-      { id: 1, nombre: 'Tarea 1', descripcion: 'Hacer to-do list', estado: 'pendiente', proyectoID:1, responsable:'Andrea' },
-      { id: 2, nombre: 'Tarea 2', descripcion: 'Hacer inventario', estado: 'en progreso', proyectoID:1, responsable:'Jhon' },
+      { id: 1, nombre: 'Tarea 1', descripcion: 'Hacer to-do list', estado: 'pendiente', proyectoID:1, responsable:'usuario' },
+      { id: 2, nombre: 'Tarea 2', descripcion: 'Hacer inventario', estado: 'en progreso', proyectoID:1, responsable:'usuario' },
     ];
 
     // Establecemos el proyecto y las tareas
@@ -71,7 +71,6 @@ const ProjectDetails = () => {
             </div>
           </div>
           <TaskList initialTasks={tasks} />
-          
         </>
       ) : (
         <p>Cargando detalles del proyecto...</p>
