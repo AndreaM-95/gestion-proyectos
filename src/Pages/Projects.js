@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import ProjectList from '../Components/ProjectList';
 import '../Styles/main.css';
-
+import axios from 'axios'; // Usamos axios para las peticiones al backend
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -10,14 +10,20 @@ const Projects = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingProjectId, setEditingProjectId] = useState(null);
 
+  // Obtener la lista de proyectos del backend
   useEffect(() => {
-    // Simulación de carga de proyectos (mock)
-    const mockProjects = [
-      { id: 1, nombre: "Proyecto A", descripcion: "Descripción del Proyecto A", fecha_inicio: '2023-01-01', fecha_finalizacion: '2023-12-31', usuario_id: 1 },
-      { id: 2, nombre: "Proyecto B", descripcion: "Descripción del Proyecto B", fecha_inicio: '2023-01-01', fecha_finalizacion: '2023-12-31', usuario_id: 2 },
-    ];
-    setProjects(mockProjects);
+    listarProyectos();
   }, []);
+
+  const listarProyectos = () => {
+    axios.get("http://localhost:5000/api/projects")
+      .then((response) => {
+        setProjects(response.data);
+      })
+      .catch((error) => {
+        console.error("Error obteniendo los proyectos:", error);
+      });
+  }
 
   // Manejar el formulario de creación/edición de proyectos
   const handleChange = (e) => {
@@ -30,16 +36,26 @@ const Projects = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isEditing) {
-      // Actualizar proyecto existente
-      setProjects(projects.map(project => project.id === editingProjectId ? { ...project, ...projectForm } : project));
-      setIsEditing(false);
-      setEditingProjectId(null);
+      // Actualizar proyecto existente en el backend
+      axios.put(`http://localhost:5000/api/projects/${editingProjectId}`, projectForm)
+        .then(response => {
+          listarProyectos();
+          setProjects(projects.map(project => project.id === editingProjectId ? response.data : project));
+          setIsEditing(false);
+          setEditingProjectId(null);
+          setProjectForm({ nombre: '', descripcion: '', fecha_inicio: '', fecha_finalizacion: '', usuario_id: '' });
+        })
+        .catch(error => console.error('Error actualizando el proyecto:', error));
     } else {
-      // Crear nuevo proyecto
-      const newProject = { ...projectForm, id: projects.length + 1 };
-      setProjects([...projects, newProject]);
+      // Crear un nuevo proyecto en el backend
+      axios.post('http://localhost:5000/api/projects', projectForm)
+        .then(response => {
+          listarProyectos();
+          setProjects([...projects, response.data]);
+          setProjectForm({ nombre: '', descripcion: '', fecha_inicio: '', fecha_finalizacion: '', usuario_id: '' });
+        })
+        .catch(error => console.error('Error creando el proyecto:', error));
     }
-    setProjectForm({ nombre: '', descripcion: '', fecha_inicio: '', fecha_finalizacion: '', usuario_id: '' });
   };
 
   // Editar un proyecto
@@ -50,19 +66,21 @@ const Projects = () => {
     setEditingProjectId(id);
   };
 
-  // Eliminar un proyecto
+  // Eliminar un proyecto del backend
   const handleDelete = (id) => {
-    setProjects(projects.filter(project => project.id !== id));
+    axios.delete(`http://localhost:5000/api/projects/${id}`)
+      .then(() => setProjects(projects.filter(project => project.id !== id)))
+      .catch(error => console.error('Error eliminando el proyecto:', error));
   };
 
   return (
     <div id="pag-proyectos" className="container d-flex flex-column align-items-center col-12 col-md-6 justify-content-center">
       <h1 className='text-center fs-2 fs-md-1 bs-info my-5'>Proyectos</h1>
-      <ProjectList projects={projects} handleEdit={handleEdit} handleDelete={handleDelete} />
+      <ProjectList projectMap={projects}  handleEdit={handleEdit} handleDelete={handleDelete} />
 
       {/* Formulario para crear/editar proyecto */}
       <Form onSubmit={handleSubmit} className="w-100 mb-5 p-4 border border-2 border-dark-subtle rounded">
-        <h3 className='my-3'>Crear un nuevo proyecto</h3>
+        <h3 className='my-3'>{isEditing ? 'Editar proyecto' : 'Crear un nuevo proyecto'}</h3>
         <Form.Group controlId="validationName">
           <Form.Label>Nombre del Proyecto</Form.Label>
           <Form.Control
