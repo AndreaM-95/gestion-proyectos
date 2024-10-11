@@ -5,14 +5,12 @@ import '../Styles/main.css';
 
 /* Este posee la información básica de cada proyecto */
 const ProjectList = ({ projectMap, handleEdit, handleDelete }) => {
-  console.log(projectMap);
-  console.log("desde map");
   return (
     <div className="d-flex flex-wrap justify-content-evenly gap-2 mb-2">
       {projectMap.map((project) => (
-        <Card  style={{ width: '18rem' }} className="box-proyecto mb-3"> {/* Asegúrate de que 'project.id' sea único */}
+        <Card key={project.id} style={{ width: '18rem' }} className="box-proyecto mb-3">
           <Card.Body>
-            <Card.Title key={project.id} className='text-center'>{project.nombre}</Card.Title>
+            <Card.Title className='text-center'>{project.nombre}</Card.Title>
             <Card.Text className='text-center'>{project.descripcion}</Card.Text>
             <div className='d-flex justify-content-center'>
               <Link to={`/projects/${project.id}`}>
@@ -31,4 +29,5 @@ const ProjectList = ({ projectMap, handleEdit, handleDelete }) => {
     </div>
   );
 }
+
 export default ProjectList;

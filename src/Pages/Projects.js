@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import ProjectList from '../Components/ProjectList';
 import '../Styles/main.css';
 import axios from 'axios'; // Usamos axios para las peticiones al backend
+import TaskCreate from '../Components/TaskCreate';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -77,8 +78,6 @@ const Projects = () => {
     <div id="pag-proyectos" className="container d-flex flex-column align-items-center col-12 col-md-6 justify-content-center">
       <h1 className='text-center fs-2 fs-md-1 bs-info my-5'>Proyectos</h1>
       <ProjectList projectMap={projects}  handleEdit={handleEdit} handleDelete={handleDelete} />
-
-      {/* Formulario para crear/editar proyecto */}
       <Form onSubmit={handleSubmit} className="w-100 mb-5 p-4 border border-2 border-dark-subtle rounded">
         <h3 className='my-3'>{isEditing ? 'Editar proyecto' : 'Crear un nuevo proyecto'}</h3>
         <Form.Group controlId="validationName">
@@ -137,6 +136,7 @@ const Projects = () => {
           {isEditing ? 'Actualizar Proyecto' : 'Crear Proyecto'}
         </Button>
       </Form>
+      <TaskCreate/>
     </div>
   );
 }
