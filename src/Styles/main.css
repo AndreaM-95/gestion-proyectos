@@ -27,6 +27,7 @@
 .box-proyecto, .box-fecha{
     box-shadow: 0px 12px 35px -18px #475154;
 }
+
 #form-group{
     width: 100%;
     display: flex;
@@ -35,12 +36,30 @@
     margin-bottom: 10px;
 }
 
-label{
-    margin: 5px 10px;
-    width: 40%;
-}
 .titulo-tabla{
     text-align: center;
+}
+
+label{
+    width: 100%;
+}
+
+.box-crear{
+    width: 48%;
+}
+
+#pag-proyectos{
+    width: 100%;
+}
+
+.box-proyectos-tareas{
+    width: 53%;
+}
+tr, td{
+    text-align: center;
+}
+td p{
+    margin: 0;
 }
 
 @media (max-width: 576px) {
@@ -50,6 +69,15 @@ label{
     label{
         width: 100%;
         margin: 0;
+    }
+    .box-proyectos-tareas{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+    .box-crear{
+        width: 100%;
     }
 }
   

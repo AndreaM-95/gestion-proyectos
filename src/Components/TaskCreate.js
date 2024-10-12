@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import Swal from 'sweetalert2'
+import '../Styles/main.css';
 
 const TaskCreate = () => {
   const [newTaskName, setNewTaskName] = useState('');
@@ -25,7 +27,6 @@ const TaskCreate = () => {
 
   const addTask = () => {
     if (!newTaskName || !newTaskDescription || !selectedProject || !selectedEncargado) return;
-
     const newTask = {
       nombre: newTaskName,
       descripcion: newTaskDescription,
@@ -41,12 +42,19 @@ const TaskCreate = () => {
         setSelectedProject('');
         setSelectedEncargado('');
         setSelectedEstado('pendiente');
+        Swal.fire({
+          title:'<strong>Registro exitoso</strong>',
+          html:'<i>La tarea ha sido creada</i>',
+          icon: 'success',
+          confirmButtonColor: "#272323",
+          timer: 3000
+        });
       })
       .catch(error => console.error('Error creando la tarea:', error));
   };
 
   return (
-    <div className='form my-3 p-4 border border-2 border-dark-subtle rounded'>
+    <div className='box-crear p-4 border border-2 border-dark-subtle rounded'>
       <h3 className='mt-2 mb-4'>Crear nueva tarea</h3>
 
       <Form.Group>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';          // Importamos Link para manejar las rutas
+import { Link } from 'react-router-dom';          
 import '../Styles/main.css';
 
 /* Este posee la información básica de cada proyecto */
