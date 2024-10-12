@@ -1,70 +1,137 @@
-# Getting Started with Create React App
+# 📊 Prueba Técnica - API de Gestión de Proyectos y Tareas
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Descripción
+Este proyecto es una **API basada en Node.js** utilizando **Express** como framework de servidor y **Axios** para las solicitudes HTTP en el front-end. La API permite la gestión de proyectos y tareas, con operaciones en tiempo real como la creación, actualización y eliminación.
 
-## Available Scripts
+### Tabla de Contenidos
+1. [Modelo de Datos](#modelo-de-datos)
+2. [Endpoints de la API](#endpoints-de-la-api)
+3. [Lógica de Negocio](#lógica-de-negocio)
+4. [Características Clave](#características-clave)
+5. [Demo](#demo)
+6. [Instrucciones de Configuración](#instrucciones-de-configuración)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 1. 📦 Modelo de Datos
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Los siguientes modelos de datos se utilizan en esta API:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🧑‍💻 **Usuario**
+- `id` (int): Identificador único.
+- `nombre` (VARCHAR): Nombre del usuario.
+- `email` (VARCHAR): Dirección de correo electrónico.
+- `contraseña` (VARCHAR): Contraseña almacenada de forma segura.
+- `rol` ENUM('admin', 'usuario') DEFAULT 'usuario'
 
-### `npm test`
+### 🗂️ **Proyecto**
+- `id` (int): Identificador único.
+- `nombre` (VARCHAR): Nombre del proyecto.
+- `descripción` (TEXT): Descripción del proyecto.
+- `fecha_inicio` (DATE): Fecha de inicio del proyecto.
+- `fecha_finalización` (DATE): Fecha de finalización del proyecto.
+- `usuario_id` (INT): ID del usuario responsable del proyecto.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### ✅ **Tarea**
+- `id` (INT): Identificador único.
+- `nombre` (VARCHAR): Nombre de la tarea.
+- `descripción` (TEXT): Descripción de la tarea.
+- `estado` (ENUM): Estado de la tarea (`pendiente`, `en progreso`, `completada`).
+- `proyecto_id` (INT): ID del proyecto asociado.
+- `asignada_a` (INT): ID del usuario asignado a la tarea.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 2. 🔗 Endpoints de la API
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 📁 **Proyectos**
+- `GET /projects`: Obtener todos los proyectos.
+- `GET /projects/{id}`: Obtener un proyecto específico.
+- `POST /projects`: Crear un nuevo proyecto.
+- `PUT /projects/{id}`: Actualizar un proyecto existente.
+- `DELETE /projects/{id}`: Eliminar un proyecto (con eliminación en cascada de todas las tareas asociadas).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 📝 **Tareas**
+- `POST /tasks`: Crear una nueva tarea.
+- `PATCH /tasks/{id}`: Actualizar el estado de una tarea.
+- `GET /tasks?project_id={id}`: Obtener tareas filtradas por proyecto.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 3. 🧠 Lógica de Negocio
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Gestión de Estado de las Tareas
+- Las tareas se crean con un estado inicial (`pendiente`), y las transiciones de estado (como `en progreso` o `completada`) se manejan correctamente.
+- Se simulan notificaciones (a través de la consola o la respuesta de la API) cuando las tareas son asignadas o actualizadas.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 4. ✨ Características Clave
 
-## Learn More
+- **Actualizaciones en tiempo real**: Los cambios en proyectos y tareas se manejan en tiempo real, asegurando actualizaciones inmediatas y fluidas.
+- **Eliminación en cascada**: Al eliminar un proyecto, todas las tareas asociadas se eliminan automáticamente.
+- **Consistencia de datos**: Se gestiona correctamente el ciclo de vida y los cambios de estado de las tareas.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 5. 🎥 Demo
 
-### Code Splitting
+Puedes ver la funcionalidad en tiempo real en el siguiente **demo**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 📸 Capturas de Pantalla
+- Inicio: <br>
+<img src='https://github.com/user-attachments/assets/90f39e35-6fbb-4866-8bf5-5678c69694fd' width=600><br>
+- Lista de proyectos y creación de estes con sus tareas: <br>
+<img src='https://github.com/user-attachments/assets/e71a9dc3-0ea5-4be6-be11-005c59150420' width=600><br>
+- Tareas y detalles del proyecto seleccionado: <br>
+<img src='https://github.com/user-attachments/assets/28edadc2-5b0e-4791-be82-a9f8e4730694' width=600><br>
 
-### Analyzing the Bundle Size
+- Responsive: <br>
+<img src='https://github.com/user-attachments/assets/2e75eeab-c271-43f8-b63b-845e4e6a6184' width=200>
+<img src='https://github.com/user-attachments/assets/89670f98-e3a7-4fb3-ab87-fe211009e040' width=200>
+<img src='https://github.com/user-attachments/assets/a0e8b6b1-9ecb-45b6-b641-b167cfaff6ec' width=200>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+### 📹 Video Demo
+- [Mira el video demo]()
+<a href="https://youtu.be/q39eyvShLXw">
+  <img src="https://github.com/user-attachments/assets/90f39e35-6fbb-4866-8bf5-5678c69694fd" width="600">
+</a>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 6. 🚀 Instrucciones de Configuración
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Para ejecutar este proyecto localmente:
 
-### Deployment
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tu-repo/prueba-tecnica.git
+   ```
+2. Instala las dependencias:
+   ```bash
+   npm install
+   npm install express
+   npm instal axios
+   npm install mysql2
+   npm install --save sweetalert2 sweetalert2-react-content y npm install sweetalert2
+   ```
+3. Configura la base de datos:
+   - Ejecuta los scripts SQL que se encuentran en la carpeta `/db` para crear las tablas necesarias.
+4. Inicia el servidor y el backend:
+   ```bash
+   npm start
+   node server.js
+   ```
+5. Accede a la API en `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+### Notas:
+- Aunque no se implementó completamente un sistema de inicio de sesión, el modelo de datos de usuario está diseñado para soportar permisos basados en roles.
+- Al eliminar un proyecto, todas las tareas asociadas se eliminan automáticamente en tiempo real.
+  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## :computer: Desarrollado por: :computer:
+| [<img src="https://user-images.githubusercontent.com/104279565/209356707-1a7b8815-ff11-42dd-bdc2-8bc90fb27ea9.png" width=130><br>Andrea Mejia<br><sub>Game and Front End Developer</sub>](https://linkedin.com/in/andrea-mejia95/) | 
+
